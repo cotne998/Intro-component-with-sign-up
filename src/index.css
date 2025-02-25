@@ -1,0 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  min-height: 100vh;
+  background-image: url(/images/bg-intro-mobile.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  font-family: "Poppins", serif;
+  background-color: #ff7979;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6.4rem;
+  padding: 6.4rem 2.4rem;
+}
+
+.header-div {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 32.7rem;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+@media only screen and (min-width: 90rem) {
+  body {
+    background-image: url(/images/bg-intro-desktop.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    padding: 12.1rem 16.5rem;
+  }
+
+  main {
+    min-width: 54rem;
+  }
+
+  .header-div {
+    max-width: 52.5rem;
+    text-align: left;
+  }
+}
