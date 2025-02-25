@@ -1,6 +1,7 @@
 import "./index.css";
 import styled from "styled-components";
 import { useState } from "react";
+import errorImage from "/images/icon-error.svg";
 
 export default function Intro() {
   const [data, setData] = useState({
@@ -50,6 +51,7 @@ export default function Intro() {
             type="text"
             placeholder={!isFilled.name ? "" : "First Name"}
           />
+          {!isFilled.name ? <ErrorIcon src={errorImage} /> : null}
           {!isFilled.name ? <span>First Name cannot be empty</span> : null}
         </InputDiv>
         <InputDiv>
@@ -63,6 +65,7 @@ export default function Intro() {
             type="text"
             placeholder={!isFilled.lastName ? "" : "Last Name"}
           />
+          {!isFilled.lastName ? <ErrorIcon src={errorImage} /> : null}
           {!isFilled.lastName ? <span>Last Name cannot be empty</span> : null}
         </InputDiv>
         <InputDiv>
@@ -85,6 +88,7 @@ export default function Intro() {
             }
             className={!isFilled.email ? "placeholder-red" : "placeholder-gray"}
           />
+          {!isFilled.email ? <ErrorIcon src={errorImage} /> : null}
           {!isFilled.email ? (
             <span>Looks like this is not an email</span>
           ) : null}
@@ -100,6 +104,7 @@ export default function Intro() {
             type="text"
             placeholder={!isFilled.password ? "" : "Password"}
           />
+          {!isFilled.password ? <ErrorIcon src={errorImage} /> : null}
           {!isFilled.password ? <span>Password cannot be empty</span> : null}
         </InputDiv>
         <StyledButton onClick={handleClick}>
@@ -214,10 +219,18 @@ const InputDiv = styled.div`
   gap: 1rem;
   flex-direction: column;
   align-items: end;
+  position: relative;
 
   span {
     font-style: italic;
     font-size: 1.1rem;
     color: #ff7979;
   }
+`;
+
+const ErrorIcon = styled.img`
+  position: absolute;
+  top: 2.7rem;
+  right: 2.7rem;
+  transform: translateY(-50%);
 `;
