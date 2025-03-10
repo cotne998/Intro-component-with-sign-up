@@ -68,7 +68,10 @@ export default function Intro() {
   };
 
   const handleChange = (field) => (event) => {
-    const value = event.target.value;
+    let value = event.target.value;
+    if (field === "name" || field === "lastName") {
+      value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+    }
     setData((prevData) => ({ ...prevData, [field]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
   };
