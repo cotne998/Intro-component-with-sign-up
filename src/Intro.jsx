@@ -24,7 +24,6 @@ export default function Intro() {
     const nameRegex = /^[A-Z][a-z]+(?: [A-Z][a-z]+)*$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // Reset errors at the beginning
     let newErrors = {
       name: "",
       lastName: "",
@@ -32,7 +31,6 @@ export default function Intro() {
       password: "",
     };
 
-    // Validation
     if (data.name.trim() === "") {
       newErrors.name = "First Name cannot be empty";
     } else if (!nameRegex.test(data.name)) {
@@ -55,15 +53,12 @@ export default function Intro() {
       newErrors.password = "Password cannot be empty";
     }
 
-    // Update errors state
     setErrors(newErrors);
 
-    // Stop if there are any errors
     if (Object.values(newErrors).some((err) => err !== "")) {
       return;
     }
 
-    // Proceed with form submission or further actions
     console.log("Form submitted successfully:", data);
   };
 
