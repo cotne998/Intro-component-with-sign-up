@@ -11,25 +11,66 @@ export default function Intro() {
     password: "",
   });
 
-  const [isFilled, setIsFilled] = useState({
-    name: true,
-    lastName: true,
-    email: true,
-    password: true,
+  const [errors, setErrors] = useState({
+    name: "",
+    lastName: "",
+    email: "",
+    password: "",
   });
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
+
+    const nameRegex = /^[A-Z][a-z]+(?: [A-Z][a-z]+)*$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    for (let key in data) {
-      if (key === "email" && !emailPattern.test(data[key])) {
-        setIsFilled((prevData) => ({ ...prevData, [key]: false }));
-      } else if (data[key].trim() === "") {
-        setIsFilled((prevData) => ({ ...prevData, [key]: false }));
-      } else {
-        setIsFilled((prevData) => ({ ...prevData, [key]: true }));
-      }
+    // Reset errors at the beginning
+    let newErrors = {
+      name: "",
+      lastName: "",
+      email: "",
+      password: "",
+    };
+
+    // Validation
+    if (data.name.trim() === "") {
+      newErrors.name = "First Name cannot be empty";
+    } else if (!nameRegex.test(data.name)) {
+      newErrors.name = "Invalid first name";
     }
+
+    if (data.lastName.trim() === "") {
+      newErrors.lastName = "Last Name cannot be empty";
+    } else if (!nameRegex.test(data.lastName)) {
+      newErrors.lastName = "Invalid last name";
+    }
+
+    if (data.email.trim() === "") {
+      newErrors.email = "Email cannot be empty";
+    } else if (!emailPattern.test(data.email)) {
+      newErrors.email = "Looks like this is not a valid email";
+    }
+
+    if (data.password.trim() === "") {
+      newErrors.password = "Password cannot be empty";
+    }
+
+    // Update errors state
+    setErrors(newErrors);
+
+    // Stop if there are any errors
+    if (Object.values(newErrors).some((err) => err !== "")) {
+      return;
+    }
+
+    // Proceed with form submission or further actions
+    console.log("Form submitted successfully:", data);
+  };
+
+  const handleChange = (field) => (event) => {
+    const value = event.target.value;
+    setData((prevData) => ({ ...prevData, [field]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
   };
 
   return (
@@ -43,72 +84,49 @@ export default function Intro() {
         <InputDiv>
           <input
             value={data.name}
-            onChange={(event) => {
-              const value = event.target.value;
-              setData((prevData) => ({ ...prevData, name: value }));
-            }}
-            style={!isFilled.name ? { borderColor: "#FF7979" } : {}}
+            onChange={handleChange("name")}
+            style={errors.name ? { borderColor: "#FF7979" } : {}}
             type="text"
-            placeholder={!isFilled.name ? "" : "First Name"}
+            placeholder="First Name"
           />
-          {!isFilled.name ? <ErrorIcon src={errorImage} /> : null}
-          {!isFilled.name ? <span>First Name cannot be empty</span> : null}
+          {errors.name && <ErrorIcon src={errorImage} />}
+          {errors.name && <span>{errors.name}</span>}
         </InputDiv>
         <InputDiv>
           <input
             value={data.lastName}
-            onChange={(event) => {
-              const value = event.target.value;
-              setData((prevData) => ({ ...prevData, lastName: value }));
-            }}
-            style={!isFilled.lastName ? { borderColor: "#FF7979" } : {}}
+            onChange={handleChange("lastName")}
+            style={errors.lastName ? { borderColor: "#FF7979" } : {}}
             type="text"
-            placeholder={!isFilled.lastName ? "" : "Last Name"}
+            placeholder="Last Name"
           />
-          {!isFilled.lastName ? <ErrorIcon src={errorImage} /> : null}
-          {!isFilled.lastName ? <span>Last Name cannot be empty</span> : null}
+          {errors.lastName && <ErrorIcon src={errorImage} />}
+          {errors.lastName && <span>{errors.lastName}</span>}
         </InputDiv>
         <InputDiv>
           <input
             value={data.email}
-            onChange={(event) => {
-              const value = event.target.value;
-              setData((prevData) => ({ ...prevData, email: value }));
-            }}
-            style={
-              !isFilled.email
-                ? {
-                    borderColor: "#FF7979",
-                  }
-                : {}
-            }
+            onChange={handleChange("email")}
+            style={errors.email ? { borderColor: "#FF7979" } : {}}
             type="text"
-            placeholder={
-              !isFilled.email ? "email@example/com" : "Email Address"
-            }
-            className={!isFilled.email ? "placeholder-red" : "placeholder-gray"}
+            placeholder="Email Address"
           />
-          {!isFilled.email ? <ErrorIcon src={errorImage} /> : null}
-          {!isFilled.email ? (
-            <span>Looks like this is not an email</span>
-          ) : null}
+          {errors.email && <ErrorIcon src={errorImage} />}
+          {errors.email && <span>{errors.email}</span>}
         </InputDiv>
         <InputDiv>
           <input
             value={data.password}
-            onChange={(event) => {
-              const value = event.target.value;
-              setData((prevData) => ({ ...prevData, password: value }));
-            }}
-            style={!isFilled.password ? { borderColor: "#FF7979" } : {}}
-            type="text"
-            placeholder={!isFilled.password ? "" : "Password"}
+            onChange={handleChange("password")}
+            style={errors.password ? { borderColor: "#FF7979" } : {}}
+            type="password"
+            placeholder="Password"
           />
-          {!isFilled.password ? <ErrorIcon src={errorImage} /> : null}
-          {!isFilled.password ? <span>Password cannot be empty</span> : null}
+          {errors.password && <ErrorIcon src={errorImage} />}
+          {errors.password && <span>{errors.password}</span>}
         </InputDiv>
-        <StyledButton onClick={handleClick}>
-          CLAIM YOUR FREE TRIAL{" "}
+        <StyledButton type="submit" onClick={handleClick}>
+          CLAIM YOUR FREE TRIAL
         </StyledButton>
         <P>
           By clicking the button, you are agreeing to our{" "}
@@ -146,7 +164,7 @@ const Offer = styled.div`
   }
 `;
 
-const Registration = styled.div`
+const Registration = styled.form`
   width: 100%;
   background-color: white;
   display: flex;
